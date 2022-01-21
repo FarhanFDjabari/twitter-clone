@@ -9,8 +9,14 @@ import '../views/ui/notifications.dart';
 import '../views/ui/search.dart';
 import '../views/widgets/twit_drawer.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
   int _pageIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +24,7 @@ class App extends StatelessWidget {
       drawer: TwitDrawer(),
       appBar: AppBar(
         backgroundColor: twitWhite,
-        elevation: 1.5,
+        elevation: 1,
         centerTitle: true,
         title: FaIcon(
           FontAwesomeIcons.twitter,
@@ -52,8 +58,11 @@ class App extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
+        elevation: 1.5,
         onTap: (index) {
-          _pageIndex = index;
+          setState(() {
+            _pageIndex = index;
+          });
         },
         items: [
           BottomNavigationBarItem(

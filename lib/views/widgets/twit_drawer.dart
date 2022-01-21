@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lohe_lohe/app_color.dart';
-import 'package:lohe_lohe/views/auth/login.dart';
+import 'package:twettir/app_color.dart';
+import 'package:twettir/views/auth/login.dart';
 
 class TwitDrawer extends StatelessWidget {
   @override
@@ -20,7 +20,7 @@ class TwitDrawer extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 30,
-                          backgroundColor: twitGrey,
+                          backgroundColor: twitDarkGrey,
                         ),
                         SizedBox(height: 8),
                         Text(

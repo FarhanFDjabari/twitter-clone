@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:lohe_lohe/app_color.dart';
+import 'package:twettir/app_color.dart';
 
 class Compose extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: twitWhite,
         leading: IconButton(
@@ -18,16 +17,18 @@ class Compose extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: RaisedButton(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: twitBlue,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                elevation: 0,
+              ),
               onPressed: () {},
-              color: twitBlue,
               child: Text(
                 "Tweet",
                 style: TextStyle(color: twitWhite),
               ),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              elevation: 0,
             ),
           )
         ],
@@ -42,8 +43,8 @@ class Compose extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CircleAvatar(
-                      radius: 25,
-                      backgroundColor: twitGrey,
+                      radius: 22,
+                      backgroundColor: twitDarkGrey,
                     ),
                     Center(
                       child: Container(
@@ -56,7 +57,7 @@ class Compose extends StatelessWidget {
                           decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: 'What\'s happening?',
-                              hintStyle: TextStyle(fontSize: 18)),
+                              hintStyle: TextStyle(fontSize: 16)),
                         ),
                       ),
                     )
@@ -65,22 +66,28 @@ class Compose extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: FlatButton(
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    primary: Colors.transparent,
+                    splashFactory: NoSplash.splashFactory,
+                  ),
                   onPressed: () {},
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
                   child: Row(
                     children: [
                       FaIcon(
                         FontAwesomeIcons.globeAsia,
                         color: twitBlue,
+                        size: 16,
                       ),
                       SizedBox(
                         width: 3,
                       ),
                       Text(
                         "Everyone can reply",
-                        style: TextStyle(color: twitBlue),
+                        style: TextStyle(
+                          color: twitBlue,
+                          fontSize: 14,
+                        ),
                       )
                     ],
                   ),

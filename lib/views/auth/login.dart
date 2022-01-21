@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:lohe_lohe/views/app.dart';
+import 'package:twettir/views/app.dart';
 
 import '../../app_color.dart';
 import '../auth/register.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  bool isObscure = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,15 +29,15 @@ class LoginPage extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12.0),
-            child: FlatButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50)),
+            child: TextButton(
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50)),
+                primary: twitLightGrey,
+              ),
               onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => RegisterPage(),
               )),
-              splashColor: twitLightGrey,
-              focusColor: Colors.transparent,
-              highlightColor: Colors.transparent,
               child: Text(
                 "Sign up",
                 style: TextStyle(
@@ -66,25 +73,33 @@ class LoginPage extends StatelessWidget {
                   decoration: InputDecoration(
                     labelText: "Email",
                   ),
-                  keyboardType: TextInputType.text,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
                 ),
                 TextField(
                   decoration: InputDecoration(
                       labelText: "Password",
                       suffixIcon: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.lock),
+                        onPressed: () {
+                          setState(() {
+                            isObscure = !isObscure;
+                          });
+                        },
+                        icon: Icon(isObscure ? Icons.lock : Icons.lock_open),
                       )),
-                  obscureText: true,
+                  obscureText: isObscure,
                   keyboardType: TextInputType.visiblePassword,
+                  textInputAction: TextInputAction.next,
                 ),
                 Center(
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50)),
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50)),
+                      primary: Colors.transparent,
+                      splashFactory: NoSplash.splashFactory,
+                    ),
                     onPressed: () {},
-                    focusColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
                     child: Text(
                       "Forgot password?",
                       style: TextStyle(color: twitGrey, fontSize: 14),
@@ -94,14 +109,16 @@ class LoginPage extends StatelessWidget {
                 Center(
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-                    child: RaisedButton(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        elevation: 0,
+                        onPrimary: twitBlue,
+                      ),
                       onPressed: () => Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(builder: (context) => App()),
                           (route) => false),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      elevation: 0,
-                      color: twitBlue,
                       child: Text(
                         "Log in",
                         style: TextStyle(color: twitWhite),

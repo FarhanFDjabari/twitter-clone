@@ -3,7 +3,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../app_color.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  bool isObscure = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,34 +44,43 @@ class RegisterPage extends StatelessWidget {
                     labelText: "Username",
                   ),
                   keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
                 ),
                 TextField(
                   decoration: InputDecoration(
                     labelText: "Email",
                   ),
                   keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
                 ),
                 TextField(
                   decoration: InputDecoration(
                       labelText: "Password",
                       suffixIcon: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.lock),
+                        onPressed: () {
+                          setState(() {
+                            isObscure = !isObscure;
+                          });
+                        },
+                        icon: Icon(isObscure ? Icons.lock : Icons.lock_open),
                       )),
-                  obscureText: true,
+                  obscureText: isObscure,
                   keyboardType: TextInputType.visiblePassword,
+                  textInputAction: TextInputAction.next,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 12.0),
                   child: Center(
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-                      child: RaisedButton(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          elevation: 0,
+                          onPrimary: twitBlue,
+                        ),
                         onPressed: () {},
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        elevation: 0,
-                        color: twitBlue,
                         child: Text(
                           "Create account",
                           style: TextStyle(color: twitWhite),
