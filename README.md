@@ -1,6 +1,6 @@
 # Twitter_Clone
 
-Twitter clone app for academic study purpose
+Twitter clone app
 
 ## Getting Started
 
