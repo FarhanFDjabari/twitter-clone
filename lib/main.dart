@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twettir/app_color.dart';
-
-import '/views/auth/login.dart';
+import 'package:twettir/views/ui/auth/login.dart';
 
 void main() {
   runApp(MyApp());

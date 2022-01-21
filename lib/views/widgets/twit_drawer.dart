@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twettir/app_color.dart';
-import 'package:twettir/views/auth/login.dart';
+import 'package:twettir/views/ui/auth/login.dart';
 
 class TwitDrawer extends StatelessWidget {
   @override

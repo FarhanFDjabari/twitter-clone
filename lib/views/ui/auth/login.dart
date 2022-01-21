@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twettir/views/app.dart';
 
-import '../../app_color.dart';
-import '../auth/register.dart';
+import '../../../app_color.dart';
+import 'register.dart';
 
 class LoginPage extends StatefulWidget {
   @override
