@@ -1,18 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:twettir/app_color.dart';
-import 'package:twettir/views/ui/edit_page.dart';
-import 'package:twettir/views/ui/tweet_detail.dart';
 
-class TweetTile extends StatelessWidget {
+import '../../app_color.dart';
+
+class ReplyTile extends StatelessWidget {
   final int tweetId;
   final String username;
   final String userId;
   final String postTime;
   final String? content;
 
-  const TweetTile(
+  const ReplyTile(
       {Key? key,
       required this.tweetId,
       required this.username,
@@ -24,19 +22,14 @@ class TweetTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () => Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (_) => TweetDetail(),
-          )),
-      contentPadding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+      onTap: () {},
+      contentPadding: const EdgeInsets.fromLTRB(8, 5, 0, 0),
       leading: CircleAvatar(
         radius: 20,
         backgroundColor: twitDarkGrey,
       ),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -75,56 +68,21 @@ class TweetTile extends StatelessWidget {
               ),
             ],
           ),
-          PopupMenuButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+          SizedBox(height: 3),
+          Text(
+            'Replying to $userId',
+            style: TextStyle(
+              color: twitDarkGrey,
+              fontSize: 14,
             ),
-            elevation: 0.5,
-            itemBuilder: (popupCtx) {
-              return [
-                PopupMenuItem(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(Icons.delete_outlined),
-                      Text('Delete Tweet'),
-                    ],
-                  ),
-                  value: 1,
-                  onTap: () {},
-                ),
-                PopupMenuItem(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(Icons.edit_outlined),
-                      Text('Edit Tweet'),
-                    ],
-                  ),
-                  value: 2,
-                ),
-              ];
-            },
-            onSelected: (value) {
-              if (value == 1) {
-              } else if (value == 2) {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (_) => EditPage(),
-                  ),
-                );
-              }
-            },
-            tooltip: 'More',
-            icon: Icon(
-              Icons.more_vert_outlined,
-            ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
         ],
       ),
       visualDensity: VisualDensity.comfortable,
       subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
@@ -135,6 +93,7 @@ class TweetTile extends StatelessWidget {
             textAlign: TextAlign.left,
             style: TextStyle(
               color: twitBlack,
+              fontSize: 18,
             ),
           ),
           Row(

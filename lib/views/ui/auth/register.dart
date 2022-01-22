@@ -9,7 +9,33 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final _usernameInputController = TextEditingController();
+  final _emailInputController = TextEditingController();
+  final _passwordInputController = TextEditingController();
+  bool isValid = false;
   bool isObscure = true;
+
+  @override
+  void dispose() {
+    _usernameInputController.dispose();
+    _emailInputController.dispose();
+    _passwordInputController.dispose();
+    super.dispose();
+  }
+
+  inputCheck() {
+    if (_usernameInputController.text.isNotEmpty &&
+        _emailInputController.text.isNotEmpty &&
+        _passwordInputController.text.isNotEmpty) {
+      setState(() {
+        isValid = true;
+      });
+    } else {
+      setState(() {
+        isValid = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,20 +66,25 @@ class _RegisterPageState extends State<RegisterPage> {
                       fontWeight: FontWeight.bold),
                 ),
                 TextField(
+                  controller: _usernameInputController,
                   decoration: InputDecoration(
                     labelText: "Username",
                   ),
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.next,
+                  onChanged: (value) => inputCheck(),
                 ),
                 TextField(
+                  controller: _emailInputController,
                   decoration: InputDecoration(
                     labelText: "Email",
                   ),
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
+                  onChanged: (value) => inputCheck(),
                 ),
                 TextField(
+                  controller: _passwordInputController,
                   decoration: InputDecoration(
                       labelText: "Password",
                       suffixIcon: IconButton(
@@ -67,6 +98,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   obscureText: isObscure,
                   keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.next,
+                  onChanged: (value) => inputCheck(),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 12.0),
@@ -80,7 +112,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           elevation: 0,
                           onPrimary: twitBlue,
                         ),
-                        onPressed: () {},
+                        onPressed: isValid ? () {} : null,
                         child: Text(
                           "Create account",
                           style: TextStyle(color: twitWhite),

@@ -11,7 +11,30 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _emailInputController = TextEditingController();
+  final _passwordInputController = TextEditingController();
+  bool isValid = false;
   bool isObscure = true;
+
+  @override
+  void dispose() {
+    _emailInputController.dispose();
+    _passwordInputController.dispose();
+    super.dispose();
+  }
+
+  inputCheck() {
+    if (_emailInputController.text.isNotEmpty &&
+        _passwordInputController.text.isNotEmpty) {
+      setState(() {
+        isValid = true;
+      });
+    } else {
+      setState(() {
+        isValid = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,13 +93,16 @@ class _LoginPageState extends State<LoginPage> {
                       fontWeight: FontWeight.bold),
                 ),
                 TextField(
+                  controller: _emailInputController,
                   decoration: InputDecoration(
                     labelText: "Email",
                   ),
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
+                  onChanged: (value) => inputCheck(),
                 ),
                 TextField(
+                  controller: _passwordInputController,
                   decoration: InputDecoration(
                       labelText: "Password",
                       suffixIcon: IconButton(
@@ -90,6 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: isObscure,
                   keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.next,
+                  onChanged: (value) => inputCheck(),
                 ),
                 Center(
                   child: TextButton(
@@ -116,9 +143,11 @@ class _LoginPageState extends State<LoginPage> {
                         elevation: 0,
                         onPrimary: twitBlue,
                       ),
-                      onPressed: () => Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => App()),
-                          (route) => false),
+                      onPressed: isValid
+                          ? () => Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) => App()),
+                              (route) => false)
+                          : null,
                       child: Text(
                         "Log in",
                         style: TextStyle(color: twitWhite),

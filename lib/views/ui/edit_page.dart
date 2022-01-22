@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:twettir/app_color.dart';
 
-class Compose extends StatefulWidget {
+import '../../app_color.dart';
+
+class EditPage extends StatefulWidget {
+  const EditPage({Key? key}) : super(key: key);
+
   @override
-  State<Compose> createState() => _ComposeState();
+  _EditPageState createState() => _EditPageState();
 }
 
-class _ComposeState extends State<Compose> {
+class _EditPageState extends State<EditPage> {
   final _tweetInputController = TextEditingController();
   bool isValid = false;
 
@@ -52,7 +55,7 @@ class _ComposeState extends State<Compose> {
               ),
               onPressed: isValid ? () {} : null,
               child: Text(
-                "Tweet",
+                "Edit Tweet",
                 style: TextStyle(color: twitWhite),
               ),
             ),

@@ -30,8 +30,9 @@ class TwitDrawer extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               fontSize: 20),
                         ),
+                        SizedBox(height: 3),
                         Text(
-                          "username@email",
+                          "@user",
                           style: TextStyle(color: twitDarkGrey, fontSize: 15),
                         ),
                         SizedBox(height: 10),

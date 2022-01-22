@@ -18,7 +18,17 @@ class HomePage extends StatelessWidget {
           },
           itemCount: 3,
           itemBuilder: (listViewCtx, index) {
-            return TweetTile();
+            return TweetTile(
+              tweetId: 1,
+              userId: ' @user ',
+              username: 'Username',
+              postTime: ' 10m',
+              content: 'Flutter & Flame: Effects and ads published by '
+                  '@RealDevOwl in \n#FlutterCommunity '
+                  '\n\nmedium.com/flutter-community/flutter-flame'
+                  '-effects-and-ads-3e243009d18c '
+                  '\n\ncc:  #Flutter @nlycskn \n@r_FlutterDev',
+            );
           },
         ),
       ),
