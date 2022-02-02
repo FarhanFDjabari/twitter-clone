@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:twettir/presenter/cubit/auth_cubit.dart';
 import 'package:twettir/views/app.dart';
+import 'package:twettir/views/ui/homepage.dart';
 
 import '../../../app_color.dart';
 import 'register.dart';
@@ -69,12 +72,30 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.more_vert_outlined,
-              color: twitBlue,
-            ),
+          BlocConsumer<AuthCubit, AuthState>(
+            listener: (context, state) {
+              if (state is AuthSuccess) {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => HomePage()));
+              }
+            },
+            builder: (context, state) {
+              if (state is AuthLoading) {
+                return IconButton(
+                    onPressed: () {}, icon: CircularProgressIndicator());
+              }
+              return IconButton(
+                onPressed: () {
+                  BlocProvider.of<AuthCubit>(context).login(
+                      _emailInputController.text,
+                      _passwordInputController.text);
+                },
+                icon: Icon(
+                  Icons.more_vert_outlined,
+                  color: twitBlue,
+                ),
+              );
+            },
           ),
         ],
       ),
