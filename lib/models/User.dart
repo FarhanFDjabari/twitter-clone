@@ -30,13 +30,16 @@ class User {
 }
 
 class UserRepository {
-  Future<String> login({
+  Future<bool> login({
     required String email,
     required String password,
   }) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/user/login'),
-      body: jsonEncode(<String, String>{
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
         "email": email,
         "password": password,
       }),
@@ -44,14 +47,17 @@ class UserRepository {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      await Cache.writeData(
-        key: 'user_data',
-        value: {
-          'email': email,
-          'token': data['token'],
-        },
-      );
-      return "Success";
+      if (data['success'] == true) {
+        await Cache.writeData(
+          key: 'user_data',
+          value: {
+            'email': email,
+            'token': data['token'],
+          },
+        );
+        return true;
+      }
+      return false;
     } else {
       throw Exception("Failed");
     }

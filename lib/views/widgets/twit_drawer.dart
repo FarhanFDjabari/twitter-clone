@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twettir/app_color.dart';
+import 'package:twettir/presenter/cubit/auth_cubit.dart';
 import 'package:twettir/views/ui/auth/login.dart';
 
 class TwitDrawer extends StatelessWidget {
@@ -80,15 +82,30 @@ class TwitDrawer extends StatelessWidget {
                       // ...
                     },
                   ),
-                  ListTile(
-                    title: Text(
-                      'Logout',
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    onTap: () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => LoginPage()),
-                          (route) => false);
+                  BlocConsumer<AuthCubit, AuthState>(
+                    listener: (context, state) {
+                      if (state is AuthSuccess) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()),
+                            (route) => false);
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is AuthLoading) {
+                        return ListTile(
+                          title: CircularProgressIndicator(),
+                        );
+                      }
+                      return ListTile(
+                        title: Text(
+                          'Logout',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        onTap: () {
+                          BlocProvider.of<AuthCubit>(context).logout();
+                        },
+                      );
                     },
                   ),
                 ],

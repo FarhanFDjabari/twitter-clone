@@ -72,30 +72,15 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-          BlocConsumer<AuthCubit, AuthState>(
-            listener: (context, state) {
-              if (state is AuthSuccess) {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => HomePage()));
-              }
+          IconButton(
+            onPressed: () {
+              BlocProvider.of<AuthCubit>(context).login(
+                  _emailInputController.text, _passwordInputController.text);
             },
-            builder: (context, state) {
-              if (state is AuthLoading) {
-                return IconButton(
-                    onPressed: () {}, icon: CircularProgressIndicator());
-              }
-              return IconButton(
-                onPressed: () {
-                  BlocProvider.of<AuthCubit>(context).login(
-                      _emailInputController.text,
-                      _passwordInputController.text);
-                },
-                icon: Icon(
-                  Icons.more_vert_outlined,
-                  color: twitBlue,
-                ),
-              );
-            },
+            icon: Icon(
+              Icons.more_vert_outlined,
+              color: twitBlue,
+            ),
           ),
         ],
       ),
@@ -165,13 +150,25 @@ class _LoginPageState extends State<LoginPage> {
                         onPrimary: twitBlue,
                       ),
                       onPressed: isValid
-                          ? () => Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(builder: (context) => App()),
-                              (route) => false)
+                          ? () => BlocProvider.of<AuthCubit>(context).login(
+                              _emailInputController.text,
+                              _passwordInputController.text)
                           : null,
-                      child: Text(
-                        "Log in",
-                        style: TextStyle(color: twitWhite),
+                      child: BlocConsumer<AuthCubit, AuthState>(
+                        listener: (context, state) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) => App()),
+                          );
+                        },
+                        builder: (context, state) {
+                          if (state is AuthLoading) {
+                            return CircularProgressIndicator();
+                          }
+                          return Text(
+                            "Log in",
+                            style: TextStyle(color: twitWhite),
+                          );
+                        },
                       ),
                     ),
                   ),

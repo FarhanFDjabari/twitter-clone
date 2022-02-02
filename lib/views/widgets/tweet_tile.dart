@@ -26,7 +26,7 @@ class TweetTile extends StatelessWidget {
     return ListTile(
       onTap: () => Navigator.push(
           context,
-          CupertinoPageRoute(
+          MaterialPageRoute(
             builder: (_) => TweetDetail(),
           )),
       contentPadding: const EdgeInsets.fromLTRB(8, 0, 0, 0),

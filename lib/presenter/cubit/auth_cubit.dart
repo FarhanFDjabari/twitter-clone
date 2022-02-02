@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:twettir/common/cache.dart';
 
 import '../../models/User.dart';
 
@@ -14,7 +15,11 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading());
     try {
       final result = await repository.login(email: email, password: password);
-      emit(AuthSuccess(result));
+      if (result == true) {
+        emit(AuthSuccess('Successfully logged in'));
+      } else {
+        emit(AuthFailed('Login failed'));
+      }
     } catch (e) {
       emit(AuthFailed(e.toString()));
     }
@@ -27,6 +32,16 @@ class AuthCubit extends Cubit<AuthState> {
       final result = await repository.register(
           email: email, password: password, name: name, username: username);
       emit(AuthSuccess(result));
+    } catch (e) {
+      emit(AuthFailed(e.toString()));
+    }
+  }
+
+  void logout() async {
+    emit(AuthLoading());
+    try {
+      await Cache.deleteData('user_data');
+      emit(AuthSuccess('Successfully logged out'));
     } catch (e) {
       emit(AuthFailed(e.toString()));
     }

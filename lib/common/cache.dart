@@ -14,4 +14,9 @@ class Cache {
     final result = await box.read(key);
     return result;
   }
+
+  static Future<void> deleteData(String key) async {
+    final box = GetStorage();
+    await box.remove(key);
+  }
 }
