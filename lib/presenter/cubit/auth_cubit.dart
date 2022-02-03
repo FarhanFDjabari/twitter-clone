@@ -2,12 +2,12 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:twettir/common/cache.dart';
 
-import '../../models/User.dart';
+import '../../services/auth_service.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final UserRepository repository;
+  final AuthService repository;
 
   AuthCubit(this.repository) : super(AuthInitial());
 
@@ -31,7 +31,11 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final result = await repository.register(
           email: email, password: password, name: name, username: username);
-      emit(AuthSuccess(result));
+      if (result == true) {
+        emit(AuthSuccess('Successfully signup'));
+      } else {
+        emit(AuthFailed('Signup failed'));
+      }
     } catch (e) {
       emit(AuthFailed(e.toString()));
     }

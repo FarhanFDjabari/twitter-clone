@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:twettir/presenter/cubit/auth_cubit.dart';
 
 import '../../../app_color.dart';
 
@@ -112,10 +114,40 @@ class _RegisterPageState extends State<RegisterPage> {
                           elevation: 0,
                           onPrimary: twitBlue,
                         ),
-                        onPressed: isValid ? () {} : null,
-                        child: Text(
-                          "Create account",
-                          style: TextStyle(color: twitWhite),
+                        onPressed: isValid
+                            ? () =>
+                                BlocProvider.of<AuthCubit>(context).register(
+                                  _emailInputController.text,
+                                  _passwordInputController.text,
+                                  _usernameInputController.text,
+                                  _usernameInputController.text,
+                                )
+                            : null,
+                        child: BlocConsumer<AuthCubit, AuthState>(
+                          listener: (context, state) {
+                            if (state is AuthSuccess) {
+                              Navigator.of(context).pop();
+                            } else if (state is AuthFailed) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(state.message)));
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state is AuthLoading) {
+                              return SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: twitWhite,
+                                  strokeWidth: 3,
+                                ),
+                              );
+                            }
+                            return Text(
+                              "Create account",
+                              style: TextStyle(color: twitWhite),
+                            );
+                          },
                         ),
                       ),
                     ),

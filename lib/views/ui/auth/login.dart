@@ -162,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                             );
                           } else if (state is AuthFailed) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("Failed to log in")));
+                                SnackBar(content: Text(state.message)));
                           }
                         },
                         builder: (context, state) {
