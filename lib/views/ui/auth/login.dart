@@ -156,13 +156,25 @@ class _LoginPageState extends State<LoginPage> {
                           : null,
                       child: BlocConsumer<AuthCubit, AuthState>(
                         listener: (context, state) {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) => App()),
-                          );
+                          if (state is AuthSuccess) {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(builder: (context) => App()),
+                            );
+                          } else if (state is AuthFailed) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Failed to log in")));
+                          }
                         },
                         builder: (context, state) {
                           if (state is AuthLoading) {
-                            return CircularProgressIndicator();
+                            return SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: twitWhite,
+                                strokeWidth: 3,
+                              ),
+                            );
                           }
                           return Text(
                             "Log in",
