@@ -1,36 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:twettir/app_color.dart';
-import 'package:twettir/views/widgets/tweet_tile.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import '../../models/Tweet.dart';
+import '../../app_color.dart';
+import '../../presenter/cubit/tweet_cubit.dart';
+import '../../views/widgets/tweet_tile.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    context.read<TweetCubit>().getTweets();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(0),
       child: RefreshIndicator(
-        onRefresh: () async {},
-        child: ListView.separated(
-          separatorBuilder: (BuildContext context, int index) {
-            return Container(
-              height: 0.5,
-              color: twitGrey.withOpacity(0.75),
+        onRefresh: () async {
+          context.read<TweetCubit>().getTweets();
+        },
+        child: BlocBuilder<TweetCubit, TweetState>(builder: (context, state) {
+          if (state is TweetLoading) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state is TweetLoaded) {
+            final List<Tweet> tweets = state.tweets;
+            return ListView.separated(
+              physics: AlwaysScrollableScrollPhysics(),
+              separatorBuilder: (BuildContext context, int index) {
+                return Container(
+                  height: 0.5,
+                  color: twitGrey.withOpacity(0.75),
+                );
+              },
+              itemCount: tweets.length,
+              itemBuilder: (listViewCtx, index) {
+                return TweetTile(
+                  tweetId: tweets[index].id,
+                  userId: tweets[index].userId.toString(),
+                  username: 'Username',
+                  postTime: timeago.format(tweets[index].createdAt),
+                  content: '''${tweets[index].content}''',
+                );
+              },
             );
-          },
-          itemCount: 3,
-          itemBuilder: (listViewCtx, index) {
-            return TweetTile(
-              tweetId: 1,
-              userId: ' @user ',
-              username: 'Username',
-              postTime: ' 10m',
-              content: 'Flutter & Flame: Effects and ads published by '
-                  '@RealDevOwl in \n#FlutterCommunity '
-                  '\n\nmedium.com/flutter-community/flutter-flame'
-                  '-effects-and-ads-3e243009d18c '
-                  '\n\ncc:  #Flutter @nlycskn \n@r_FlutterDev',
-            );
-          },
-        ),
+          }
+          return SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Center(
+              child: Text("Something went wrong"),
+            ),
+          );
+        }),
       ),
     );
   }

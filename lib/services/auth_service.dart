@@ -1,10 +1,7 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
+import '../common/constants.dart';
 import '../common/cache.dart';
-
-const BASE_URL =
-    'http://ec2-18-138-35-61.ap-southeast-1.compute.amazonaws.com:8080';
 
 class AuthService {
   Future<bool> login({

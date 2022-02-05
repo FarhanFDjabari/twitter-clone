@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:twettir/views/app.dart';
-import 'app_color.dart';
+import 'presenter/cubit/tweet_cubit.dart';
+import 'services/tweet_service.dart';
+import 'views/app.dart';
 import 'presenter/cubit/auth_cubit.dart';
 import 'views/ui/auth/login.dart';
-
+import 'app_color.dart';
 import 'common/cache.dart';
 import 'services/auth_service.dart';
 
@@ -26,7 +27,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => AuthCubit(AuthService()))],
+      providers: [
+        BlocProvider(create: (_) => AuthCubit(AuthService())),
+        BlocProvider(create: (_) => TweetCubit(TweetService()))
+      ],
       child: MaterialApp(
         title: 'Twettir',
         theme: ThemeData(

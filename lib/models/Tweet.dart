@@ -1,29 +1,25 @@
 import 'Reply.dart';
 
 class Tweet {
-  final String id;
-  final String userId;
+  final int id;
+  final int userId;
   final String content;
+  final int? repliedTo;
   final DateTime createdAt;
-  final List<Reply> replies;
 
   const Tweet({
     required this.id,
     required this.userId,
     required this.content,
+    required this.repliedTo,
     required this.createdAt,
-    required this.replies,
   });
-}
 
-abstract class TweetRepository {
-  Future<List<Tweet>> getTweets();
-}
-
-class TweetRepositoryImpl implements TweetRepository {
-  @override
-  Future<List<Tweet>> getTweets() {
-    // TODO: implement getTweets
-    throw UnimplementedError();
-  }
+  Tweet.fromJson(Map<String, dynamic> json)
+      : id = json['id'] as int,
+        userId = json['user_id'] as int,
+        content = json['content'],
+        repliedTo = json['replied_to'] as int?,
+        createdAt =
+            DateTime.fromMillisecondsSinceEpoch(json['created_at'] as int);
 }
