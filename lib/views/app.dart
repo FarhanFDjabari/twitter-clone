@@ -49,15 +49,18 @@ class _AppState extends State<App> {
                   ? NotificationsPage()
                   : MessagesPage(),
       floatingActionButton: FloatingActionButton(
-          onPressed: () => Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => Compose()))
-              .then((_) => context.read<TweetCubit>().getTweets()),
-          elevation: 1,
-          backgroundColor: twitBlue,
-          child: Icon(
-            Icons.add,
-            color: twitWhite,
-          )),
+        onPressed: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => Compose()))
+            .then(
+              (_) => context.read<TweetCubit>().getTweets(),
+            ),
+        elevation: 1,
+        backgroundColor: twitBlue,
+        child: Icon(
+          Icons.add,
+          color: twitWhite,
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,

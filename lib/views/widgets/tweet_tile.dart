@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twettir/app_color.dart';
+import 'package:twettir/presenter/cubit/tweet_cubit.dart';
 import 'package:twettir/views/ui/edit_page.dart';
 import 'package:twettir/views/ui/tweet_detail.dart';
 
@@ -91,7 +93,9 @@ class TweetTile extends StatelessWidget {
                     ],
                   ),
                   value: 1,
-                  onTap: () {},
+                  onTap: () {
+                    context.read<TweetCubit>().deleteTweet(tweetId);
+                  },
                 ),
                 PopupMenuItem(
                   child: Row(
@@ -126,13 +130,13 @@ class TweetTile extends StatelessWidget {
       visualDensity: VisualDensity.comfortable,
       subtitle: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             content ?? '',
             overflow: TextOverflow.ellipsis,
             maxLines: 9,
             softWrap: true,
-            textAlign: TextAlign.left,
             style: TextStyle(
               color: twitBlack,
             ),

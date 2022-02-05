@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:twettir/presenter/cubit/auth_cubit.dart';
-import 'package:twettir/views/app.dart';
-import 'package:twettir/views/ui/homepage.dart';
-
+import '../../../presenter/cubit/auth_cubit.dart';
+import '../../../views/app.dart';
 import '../../../app_color.dart';
 import 'register.dart';
 

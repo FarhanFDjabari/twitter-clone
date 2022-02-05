@@ -26,40 +26,47 @@ class _HomePageState extends State<HomePage> {
         onRefresh: () async {
           context.read<TweetCubit>().getTweets();
         },
-        child: BlocBuilder<TweetCubit, TweetState>(builder: (context, state) {
-          if (state is TweetLoading) {
-            return Center(child: CircularProgressIndicator());
-          } else if (state is TweetLoaded) {
-            final List<Tweet> tweets = state.tweets;
-            return ListView.separated(
-              physics: AlwaysScrollableScrollPhysics(),
-              separatorBuilder: (BuildContext context, int index) {
-                return Container(
-                  height: 0.5,
-                  color: twitGrey.withOpacity(0.75),
-                );
-              },
-              itemCount: tweets.length,
-              itemBuilder: (listViewCtx, index) {
-                return TweetTile(
-                  tweetId: tweets[index].id,
-                  userId: tweets[index].userId.toString(),
-                  username: 'Username',
-                  postTime: timeago.format(tweets[index].createdAt),
-                  content: '''${tweets[index].content}''',
-                );
-              },
-            );
-          } else if (state is TweetFailed) {
-            return SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              child: Center(
-                child: Text(state.message),
-              ),
-            );
-          }
-          return SizedBox();
-        }),
+        child: BlocConsumer<TweetCubit, TweetState>(
+          listener: (context, state) {
+            if (state is DeleteTweetSuccess) {
+              context.read<TweetCubit>().getTweets();
+            }
+          },
+          builder: (context, state) {
+            if (state is TweetLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is TweetLoaded) {
+              final List<Tweet> tweets = state.tweets;
+              return ListView.separated(
+                physics: AlwaysScrollableScrollPhysics(),
+                separatorBuilder: (BuildContext context, int index) {
+                  return Container(
+                    height: 0.5,
+                    color: twitGrey.withOpacity(0.75),
+                  );
+                },
+                itemCount: tweets.length,
+                itemBuilder: (listViewCtx, index) {
+                  return TweetTile(
+                    tweetId: tweets[index].id,
+                    userId: tweets[index].userId.toString(),
+                    username: 'Username',
+                    postTime: timeago.format(tweets[index].createdAt),
+                    content: '''${tweets[index].content}''',
+                  );
+                },
+              );
+            } else if (state is TweetFailed) {
+              return SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                child: Center(
+                  child: Text(state.message),
+                ),
+              );
+            }
+            return SizedBox();
+          },
+        ),
       ),
     );
   }

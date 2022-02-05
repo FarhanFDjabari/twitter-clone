@@ -43,4 +43,16 @@ class TweetService {
     }
     return tweets;
   }
+
+  Future<bool> deleteTweet(int id) async {
+    final response = await http.delete(Uri.parse('$BASE_URL/tweet/$id'));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data['success'] == true) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

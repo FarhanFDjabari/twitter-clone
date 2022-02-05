@@ -28,3 +28,13 @@ class PostTweetFailed extends TweetState {
 
   PostTweetFailed(this.message);
 }
+
+class DeleteTweetLoading extends TweetState {}
+
+class DeleteTweetSuccess extends TweetState {}
+
+class DeleteTweetFailed extends TweetState {
+  final String message;
+
+  DeleteTweetFailed(this.message);
+}

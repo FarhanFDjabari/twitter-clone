@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twettir/app_color.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:twettir/models/Tweet.dart';
 import 'package:twettir/presenter/cubit/tweet_cubit.dart';
 
 class Compose extends StatefulWidget {

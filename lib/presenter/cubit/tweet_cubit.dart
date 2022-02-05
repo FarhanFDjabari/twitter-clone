@@ -33,4 +33,18 @@ class TweetCubit extends Cubit<TweetState> {
       emit(PostTweetFailed(e.toString()));
     }
   }
+
+  void deleteTweet(int id) async {
+    emit(DeleteTweetLoading());
+    try {
+      final result = await service.deleteTweet(id);
+      if (result == true) {
+        emit(DeleteTweetSuccess());
+      } else {
+        emit(DeleteTweetFailed('Failed to delete tweet'));
+      }
+    } catch (e) {
+      emit(DeleteTweetFailed(e.toString()));
+    }
+  }
 }
