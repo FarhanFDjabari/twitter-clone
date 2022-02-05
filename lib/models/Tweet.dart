@@ -1,9 +1,7 @@
-import 'Reply.dart';
-
 class Tweet {
   final int id;
   final int userId;
-  final String content;
+  final String? content;
   final int? repliedTo;
   final DateTime createdAt;
 

@@ -50,13 +50,15 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             );
+          } else if (state is TweetFailed) {
+            return SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Center(
+                child: Text(state.message),
+              ),
+            );
           }
-          return SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: Center(
-              child: Text("Something went wrong"),
-            ),
-          );
+          return SizedBox();
         }),
       ),
     );

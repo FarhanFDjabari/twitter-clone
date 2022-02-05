@@ -26,7 +26,7 @@ class AuthService {
           key: 'user_data',
           value: {
             'email': email,
-            'token': data['token'],
+            'token': data['data']['token'],
           },
         );
         return true;

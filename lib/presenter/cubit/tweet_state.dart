@@ -18,3 +18,13 @@ class TweetFailed extends TweetState {
 
   TweetFailed(this.message);
 }
+
+class PostTweetLoading extends TweetState {}
+
+class PostTweetSuccess extends TweetState {}
+
+class PostTweetFailed extends TweetState {
+  final String message;
+
+  PostTweetFailed(this.message);
+}

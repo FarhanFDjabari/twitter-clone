@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:twettir/presenter/cubit/tweet_cubit.dart';
 
 import '../app_color.dart';
 import '../views/ui/compose.dart';
@@ -48,7 +50,8 @@ class _AppState extends State<App> {
                   : MessagesPage(),
       floatingActionButton: FloatingActionButton(
           onPressed: () => Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => Compose())),
+              .push(MaterialPageRoute(builder: (context) => Compose()))
+              .then((_) => context.read<TweetCubit>().getTweets()),
           elevation: 1,
           backgroundColor: twitBlue,
           child: Icon(

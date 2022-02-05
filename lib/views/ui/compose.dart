@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twettir/app_color.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:twettir/models/Tweet.dart';
+import 'package:twettir/presenter/cubit/tweet_cubit.dart';
 
 class Compose extends StatefulWidget {
   @override
@@ -43,20 +46,51 @@ class _ComposeState extends State<Compose> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: twitBlue,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                elevation: 0,
-              ),
-              onPressed: isValid ? () {} : null,
-              child: Text(
-                "Tweet",
-                style: TextStyle(color: twitWhite),
-              ),
+            child: BlocConsumer<TweetCubit, TweetState>(
+              listener: (context, state) {
+                if (state is PostTweetSuccess) {
+                  Navigator.pop(context);
+                } else if (state is PostTweetFailed) {
+                  print(state.message);
+                }
+              },
+              builder: (context, state) {
+                if (state is PostTweetLoading) {
+                  return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: twitBlue,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        elevation: 0,
+                      ),
+                      onPressed: null,
+                      child: SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                            strokeWidth: 3, color: twitWhite),
+                      ));
+                }
+                return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: twitBlue,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      elevation: 0,
+                    ),
+                    onPressed: isValid
+                        ? () {
+                            BlocProvider.of<TweetCubit>(context)
+                                .postTweets(_tweetInputController.text);
+                          }
+                        : null,
+                    child: Text(
+                      "Tweet",
+                      style: TextStyle(color: twitWhite),
+                    ));
+              },
             ),
-          )
+          ),
         ],
       ),
       body: Column(
