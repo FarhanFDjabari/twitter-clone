@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:twettir/presenter/cubit/tweet_cubit.dart';
 
 import '../../app_color.dart';
 
 class EditPage extends StatefulWidget {
-  const EditPage({Key? key}) : super(key: key);
+  final int id;
+  final String content;
+  const EditPage({Key? key, required this.id, required this.content})
+      : super(key: key);
 
   @override
   _EditPageState createState() => _EditPageState();
@@ -13,6 +18,12 @@ class EditPage extends StatefulWidget {
 class _EditPageState extends State<EditPage> {
   final _tweetInputController = TextEditingController();
   bool isValid = false;
+
+  @override
+  void initState() {
+    _tweetInputController.text = widget.content;
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -46,18 +57,54 @@ class _EditPageState extends State<EditPage> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: twitBlue,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                elevation: 0,
-              ),
-              onPressed: isValid ? () {} : null,
-              child: Text(
-                "Edit Tweet",
-                style: TextStyle(color: twitWhite),
-              ),
+            child: BlocConsumer<TweetCubit, TweetState>(
+              listener: (context, state) {
+                if (state is UpdateTweetSuccess) {
+                  Navigator.pop(context);
+                  context.read<TweetCubit>().getTweets();
+                } else if (state is UpdateTweetFailed) {
+                  print(state.message);
+                }
+              },
+              builder: (context, state) {
+                if (state is UpdateTweetLoading) {
+                  return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: twitBlue,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      elevation: 0,
+                    ),
+                    onPressed: () {},
+                    child: SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        color: twitWhite,
+                        strokeWidth: 3,
+                      ),
+                    ),
+                  );
+                }
+                return ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: twitBlue,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    elevation: 0,
+                  ),
+                  onPressed: isValid
+                      ? () {
+                          context.read<TweetCubit>().updateTweet(
+                              widget.id, _tweetInputController.text);
+                        }
+                      : null,
+                  child: Text(
+                    "Edit Tweet",
+                    style: TextStyle(color: twitWhite),
+                  ),
+                );
+              },
             ),
           )
         ],

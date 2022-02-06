@@ -115,7 +115,10 @@ class TweetTile extends StatelessWidget {
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (_) => EditPage(),
+                    builder: (_) => EditPage(
+                      id: tweetId,
+                      content: content ?? '',
+                    ),
                   ),
                 );
               }

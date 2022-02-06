@@ -148,7 +148,11 @@ class _TweetDetailState extends State<TweetDetail> {
                                     Navigator.push(
                                       context,
                                       CupertinoPageRoute(
-                                        builder: (_) => EditPage(),
+                                        // TODO: change to dynamic data
+                                        builder: (_) => EditPage(
+                                          id: 1,
+                                          content: '',
+                                        ),
                                       ),
                                     );
                                   }
