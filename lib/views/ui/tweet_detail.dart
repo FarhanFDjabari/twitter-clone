@@ -72,7 +72,12 @@ class _TweetDetailState extends State<TweetDetail> {
           ),
         ),
       ),
-      body: BlocBuilder<TweetCubit, TweetState>(builder: (context, state) {
+      body: BlocConsumer<TweetCubit, TweetState>(listener: (context, state) {
+        if (state is PostTweetSuccess) {
+          context.read<TweetCubit>().getTweetById(widget.id);
+          _replyInputController.text = '';
+        }
+      }, builder: (context, state) {
         if (state is GetTweetByIdLoading) {
           return Center(child: CircularProgressIndicator());
         } else if (state is GetTweetByIdFailed) {
@@ -315,7 +320,12 @@ class _TweetDetailState extends State<TweetDetail> {
                         ),
                         Material(
                           child: IconButton(
-                            onPressed: isValid ? () {} : null,
+                            onPressed: isValid
+                                ? () {
+                                    context.read<TweetCubit>().postReplyTweet(
+                                        widget.id, _replyInputController.text);
+                                  }
+                                : null,
                             icon: Icon(
                               Icons.send_outlined,
                               color: isValid

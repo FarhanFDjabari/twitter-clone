@@ -14,7 +14,8 @@ class TweetCubit extends Cubit<TweetState> {
   void getTweets() async {
     emit(TweetLoading());
     try {
-      final result = await service.getTweets();
+      List<Tweet> result = await service.getTweets();
+      result = result.where((element) => element.repliedTo == null).toList();
       emit(TweetLoaded(result));
     } catch (e) {
       emit(TweetFailed(e.toString()));
@@ -35,10 +36,24 @@ class TweetCubit extends Cubit<TweetState> {
     }
   }
 
-  void postTweets(String content) async {
+  void postTweet(String content) async {
     emit(PostTweetLoading());
     try {
       final result = await service.postTweet(content);
+      if (result == true) {
+        emit(PostTweetSuccess());
+      } else {
+        emit(PostTweetFailed('Failed to post tweet'));
+      }
+    } catch (e) {
+      emit(PostTweetFailed(e.toString()));
+    }
+  }
+
+  void postReplyTweet(int id, String content) async {
+    emit(PostTweetLoading());
+    try {
+      final result = await service.postReplyTweet(id, content);
       if (result == true) {
         emit(PostTweetSuccess());
       } else {

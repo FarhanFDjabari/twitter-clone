@@ -30,6 +30,32 @@ class TweetService {
     return false;
   }
 
+  Future<bool> postReplyTweet(int id, String content) async {
+    final cache = await Cache.getData('user_data');
+    final token = cache['token'];
+
+    final response = await http.post(
+      Uri.parse('$BASE_URL/tweet'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({
+        'content': content,
+        'replied_to': id,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data['success'] == true) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   Future<List<Tweet>> getTweets() async {
     final response = await http.get(Uri.parse('$BASE_URL/tweet'));
     List<Tweet> tweets = [];

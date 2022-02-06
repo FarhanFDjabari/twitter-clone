@@ -80,7 +80,7 @@ class _ComposeState extends State<Compose> {
                     onPressed: isValid
                         ? () {
                             BlocProvider.of<TweetCubit>(context)
-                                .postTweets(_tweetInputController.text);
+                                .postTweet(_tweetInputController.text);
                           }
                         : null,
                     child: Text(
