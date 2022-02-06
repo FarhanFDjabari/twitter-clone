@@ -1,4 +1,6 @@
-class Tweet {
+import 'package:equatable/equatable.dart';
+
+class Tweet extends Equatable {
   final int id;
   final int userId;
   final String? content;
@@ -22,4 +24,7 @@ class Tweet {
       createdAt: DateTime.fromMillisecondsSinceEpoch(json['created_at'] as int),
     );
   }
+
+  @override
+  List<Object?> get props => [id, userId, content, repliedTo, createdAt];
 }

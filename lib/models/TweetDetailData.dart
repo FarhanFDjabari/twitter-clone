@@ -1,7 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:twettir/models/Tweet.dart';
 import 'package:twettir/models/User.dart';
 
-class TweetDetailData {
+class TweetDetailData extends Equatable {
   final int id;
   final int userId;
   final String? content;
@@ -35,4 +36,8 @@ class TweetDetailData {
       user: User.fromJson(json['user']),
     );
   }
+
+  @override
+  List<Object?> get props =>
+      [id, userId, content, repliedTo, createdAt, replies, user];
 }
