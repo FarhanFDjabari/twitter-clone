@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:twettir/models/TweetDetailData.dart';
 import '../../services/tweet_service.dart';
 import '../../models/Tweet.dart';
 
@@ -17,6 +18,20 @@ class TweetCubit extends Cubit<TweetState> {
       emit(TweetLoaded(result));
     } catch (e) {
       emit(TweetFailed(e.toString()));
+    }
+  }
+
+  void getTweetById(int id) async {
+    emit(GetTweetByIdLoading());
+    try {
+      final result = await service.getTweetById(id);
+      if (result != null) {
+        emit(GetTweetByIdSuccess(result));
+      } else {
+        emit(GetTweetByIdFailed('Failed'));
+      }
+    } catch (e) {
+      emit(GetTweetByIdFailed(e.toString()));
     }
   }
 

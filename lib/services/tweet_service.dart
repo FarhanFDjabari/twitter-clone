@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:twettir/common/cache.dart';
+import 'package:twettir/models/TweetDetailData.dart';
 import '../models/Tweet.dart';
 import '../common/constants.dart';
 
@@ -42,6 +43,18 @@ class TweetService {
       }
     }
     return tweets;
+  }
+
+  Future<TweetDetailData?> getTweetById(int id) async {
+    final response = await http.get(Uri.parse('$BASE_URL/tweet/$id'));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data['success'] == true) {
+        return TweetDetailData.fromJson(data['data']);
+      }
+    } else {
+      throw Exception('Failed');
+    }
   }
 
   Future<bool> deleteTweet(int id) async {

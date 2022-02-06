@@ -1,8 +1,8 @@
 class User {
-  final String email;
-  final String password;
-  final String name;
-  final String username;
+  final String? email;
+  final String? password;
+  final String? name;
+  final String? username;
   final String? token;
 
   User({

@@ -48,3 +48,17 @@ class DeleteTweetFailed extends TweetState {
 
   DeleteTweetFailed(this.message);
 }
+
+class GetTweetByIdLoading extends TweetState {}
+
+class GetTweetByIdSuccess extends TweetState {
+  final TweetDetailData tweet;
+
+  GetTweetByIdSuccess(this.tweet);
+}
+
+class GetTweetByIdFailed extends TweetState {
+  final String message;
+
+  GetTweetByIdFailed(this.message);
+}

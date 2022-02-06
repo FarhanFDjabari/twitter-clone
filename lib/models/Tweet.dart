@@ -13,11 +13,13 @@ class Tweet {
     required this.createdAt,
   });
 
-  Tweet.fromJson(Map<String, dynamic> json)
-      : id = json['id'] as int,
-        userId = json['user_id'] as int,
-        content = json['content'],
-        repliedTo = json['replied_to'] as int?,
-        createdAt =
-            DateTime.fromMillisecondsSinceEpoch(json['created_at'] as int);
+  factory Tweet.fromJson(Map<String, dynamic> json) {
+    return Tweet(
+      id: json['id'] as int,
+      userId: json['user_id'] as int,
+      content: json['content'],
+      repliedTo: json['replied_to'] as int?,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(json['created_at'] as int),
+    );
+  }
 }

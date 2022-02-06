@@ -26,11 +26,13 @@ class TweetTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => TweetDetail(),
-          )),
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => TweetDetail(id: tweetId),
+            ));
+      },
       contentPadding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
       leading: CircleAvatar(
         radius: 20,
