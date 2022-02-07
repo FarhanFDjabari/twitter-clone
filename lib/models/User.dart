@@ -8,10 +8,10 @@ class User extends Equatable {
   final String? token;
 
   User({
-    required this.email,
-    required this.password,
-    required this.name,
-    required this.username,
+    this.email,
+    this.password,
+    this.name,
+    this.username,
     this.token,
   });
 

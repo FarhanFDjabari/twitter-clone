@@ -7,7 +7,6 @@ import 'views/app.dart';
 import 'presenter/cubit/auth_cubit.dart';
 import 'views/ui/auth/login.dart';
 import 'app_color.dart';
-import 'common/cache.dart';
 import 'services/auth_service.dart';
 
 void main() async {
@@ -16,49 +15,43 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  Future<bool> isLoggedIn() async {
-    final result = await Cache.getData('user_data');
-    if (result != null) {
-      return true;
-    }
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => AuthCubit(AuthService())),
+        BlocProvider(create: (_) => AuthCubit(AuthService())..checkAuth()),
         BlocProvider(create: (_) => TweetCubit(TweetService()))
       ],
       child: MaterialApp(
-        title: 'Twettir',
-        theme: ThemeData(
-          bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            backgroundColor: twitWhite,
-            elevation: 1.5,
-            type: BottomNavigationBarType.fixed,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            unselectedItemColor: twitBlue,
-            selectedIconTheme: IconThemeData(color: twitBlue),
+          title: 'Twettir',
+          theme: ThemeData(
+            bottomNavigationBarTheme: BottomNavigationBarThemeData(
+              backgroundColor: twitWhite,
+              elevation: 1.5,
+              type: BottomNavigationBarType.fixed,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              unselectedItemColor: twitBlue,
+              selectedIconTheme: IconThemeData(color: twitBlue),
+            ),
+            appBarTheme: AppBarTheme(iconTheme: IconThemeData(color: twitBlue)),
+            primarySwatch: Colors.blue,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
-          appBarTheme: AppBarTheme(iconTheme: IconThemeData(color: twitBlue)),
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: FutureBuilder(
-          future: isLoggedIn(),
-          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData) {
-                return snapshot.data == true ? App() : LoginPage();
-              }
-            }
-            return LoginPage();
-          },
-        ),
-      ),
+          home: BlocBuilder<AuthCubit, AuthState>(
+            builder: (context, state) {
+              if (state is Authenticated)
+                return App();
+              else if (state is AuthLoading)
+                return Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              else
+                return LoginPage();
+            },
+          )),
     );
   }
 }

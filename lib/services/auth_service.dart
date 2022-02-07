@@ -1,9 +1,18 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:twettir/models/User.dart';
 import '../common/constants.dart';
 import '../common/cache.dart';
 
 class AuthService {
+  Future<User?> checkAuth() async {
+    final data = await Cache.getData('user_data');
+    if (data != null) {
+      return User(email: data['email'], token: data['token']);
+    }
+    return null;
+  }
+
   Future<bool> login({
     required String email,
     required String password,

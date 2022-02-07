@@ -1,20 +1,36 @@
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:twettir/common/cache.dart';
+import 'package:twettir/models/User.dart';
 
 import '../../services/auth_service.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final AuthService repository;
+  final AuthService service;
 
-  AuthCubit(this.repository) : super(AuthInitial());
+  AuthCubit(this.service) : super(AuthInitial());
+
+  void checkAuth() async {
+    emit(AuthLoading());
+    try {
+      final result = await service.checkAuth();
+      if (result != null) {
+        emit(Authenticated(result));
+      } else {
+        emit(Unauthenticated());
+      }
+    } catch (e) {
+      emit(AuthFailed(e.toString()));
+    }
+  }
 
   void login(String email, String password) async {
     emit(AuthLoading());
     try {
-      final result = await repository.login(email: email, password: password);
+      final result = await service.login(email: email, password: password);
       if (result == true) {
         emit(AuthSuccess('Successfully logged in'));
       } else {
@@ -29,7 +45,7 @@ class AuthCubit extends Cubit<AuthState> {
       String email, String password, String name, String username) async {
     emit(AuthLoading());
     try {
-      final result = await repository.register(
+      final result = await service.register(
           email: email, password: password, name: name, username: username);
       if (result == true) {
         emit(AuthSuccess('Successfully signup'));
