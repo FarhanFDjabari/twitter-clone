@@ -22,12 +22,12 @@ class TweetDetailData extends Equatable {
 
   factory TweetDetailData.fromJson(Map<String, dynamic> json) {
     return TweetDetailData(
-      id: json['tweet']['id'] as int,
-      userId: json['tweet']['user_id'] as int,
+      id: json['tweet']['id'],
+      userId: json['tweet']['user_id'],
       content: json['tweet']['content'],
-      repliedTo: json['tweet']['replied_to'] as int?,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(
-          json['tweet']['created_at'] as int),
+      repliedTo: json['tweet']['replied_to'],
+      createdAt:
+          DateTime.fromMillisecondsSinceEpoch(json['tweet']['created_at']),
       replies: json['replies'] != null
           ? List<Tweet>.from(
               json["replies"].map((reply) => Tweet.fromJson(reply)),

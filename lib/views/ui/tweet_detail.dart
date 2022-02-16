@@ -276,8 +276,8 @@ class _TweetDetailState extends State<TweetDetail> {
                               final reply = tweet.replies?[index];
                               return ReplyTile(
                                 tweetId: reply!.id,
-                                userId: reply.userId.toString(),
-                                username: 'Username 1',
+                                userId: reply.handle,
+                                username: reply.name,
                                 postTime: timeago.format(reply.createdAt),
                                 content: reply.content,
                               );

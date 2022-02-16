@@ -49,8 +49,8 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (listViewCtx, index) {
                   return TweetTile(
                     tweetId: tweets[index].id,
-                    userId: tweets[index].userId.toString(),
-                    username: 'Username',
+                    userId: tweets[index].handle,
+                    username: tweets[index].name,
                     postTime: timeago.format(tweets[index].createdAt),
                     content: '''${tweets[index].content}''',
                   );

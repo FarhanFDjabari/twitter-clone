@@ -54,7 +54,7 @@ class TweetTile extends StatelessWidget {
                 maxLines: 1,
               ),
               Text(
-                userId,
+                "@$userId",
                 style: TextStyle(
                   color: twitDarkGrey,
                   fontSize: 14,
@@ -65,6 +65,7 @@ class TweetTile extends StatelessWidget {
               Container(
                 width: 2,
                 height: 2,
+                margin: const EdgeInsets.symmetric(horizontal: 2),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: twitDarkGrey,

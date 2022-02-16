@@ -7,9 +7,13 @@ import '../models/Tweet.dart';
 import '../common/constants.dart';
 
 class TweetService {
-  Future<bool> postTweet(String content) async {
+  Future<String> getToken() async {
     final cache = await Cache.getData('user_data');
-    final token = cache['token'];
+    return cache['token'];
+  }
+
+  Future<bool> postTweet(String content) async {
+    final token = await getToken();
 
     final response = await http.post(
       Uri.parse('$BASE_URL/tweet'),
@@ -31,8 +35,7 @@ class TweetService {
   }
 
   Future<bool> postReplyTweet(int id, String content) async {
-    final cache = await Cache.getData('user_data');
-    final token = cache['token'];
+    final token = await getToken();
 
     final response = await http.post(
       Uri.parse('$BASE_URL/tweet'),
@@ -96,8 +99,7 @@ class TweetService {
   }
 
   Future<bool> updateTweet(int id, String content) async {
-    final cache = await Cache.getData('user_data');
-    final token = cache['token'];
+    final token = await getToken();
 
     final response = await http.post(
       Uri.parse('$BASE_URL/tweet/$id'),
